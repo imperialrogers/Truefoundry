@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8443
 
 # Command to run the application
-CMD [ "npm", "start"]
+CMD ["sh", "-c", "npm i openai && npm start"]

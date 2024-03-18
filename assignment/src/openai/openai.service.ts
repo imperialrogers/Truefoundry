@@ -31,7 +31,7 @@ export class OpenaiService {
                 prompt: input.messages[0].content,
                 response: outputString,
                 latency: latency,
-                inputTokens: this.calculateInputTokens(input.messages),
+                inputTokens: this.calculateInputTokens(input.messages[0].content),
                 outputTokens: this.calculateOutputTokens(outputString),
                 metadata: inputMetadata,
                 stream: false,
@@ -89,11 +89,8 @@ export class OpenaiService {
         return words.length;
     }
 
-    calculateInputTokens(messages: OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[]) {
-        return messages.reduce((totalTokens, message) => {
-            const words = message.content.split(' ');
-            const messageTokens = words.length;
-            return totalTokens + messageTokens;
-        }, 0);
+    calculateInputTokens(messages: string) {
+        const words = messages.split(' ');
+        return words.length;
     }
 }

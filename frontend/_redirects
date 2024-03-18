@@ -1,7 +1,1 @@
 /* /index.html 200
-/admin/dashboard/*    /index.html   200
-/admin/product/*      /index.html   200
-/admin/customer/*     /index.html   200
-/admin/chart/bar/*    /index.html   200
-/admin/chart/pie/*    /index.html   200
-/admin/chart/line/*   /index.html   200

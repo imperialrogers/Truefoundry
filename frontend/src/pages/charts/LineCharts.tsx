@@ -128,6 +128,7 @@ const BarCharts = () => {
         </section>
 
         <div>
+        <h5>***LABELS OF THE GRAPHS ARE BUGGY***</h5>
           <MultiKPISeriesChart dataSets={modelData} models={models} />
         </div>
 

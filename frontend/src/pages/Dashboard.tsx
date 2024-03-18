@@ -30,7 +30,6 @@ const dashboard = () => {
   const [topList, setTopList] = useState<DataType[]>([]);
   const [envData, setEnvData] = useState<EnvData[]>([]);
   const [gptModelsData, setGPTModelsData] = useState<GPTModel[]>([]);
-  const [percentages, setPercentages] = useState<number[]>([30,2,56,22]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +38,6 @@ const dashboard = () => {
         const topList = await fetch("https://truefoundry-0-0-0-release.onrender.com/dashboard/latest5");
         const envResponse = await fetch("https://truefoundry-0-0-0-release.onrender.com/dashboard/env");
         const gptData = await fetch(`https://truefoundry-0-0-0-release.onrender.com/dashboard/gpt-models`);
-        const percentData = await fetch(`https://truefoundry-0-0-0-release.onrender.com/dashboard/latest-logs`);
         if (!gptData.ok) {
           throw new Error("Failed to fetch GPT models data");
         }
@@ -50,21 +48,11 @@ const dashboard = () => {
         const topListData = await topList.json();
         const envData = await envResponse.json();
         const data2 = await gptData.json();
-        const latest=await percentData.json();
         setData(responseData);
 
         setGPTModelsData(data2);
         setEnvData(envData);
         setTopList(topListData);        
-        if (retrievedData) {
-          const calculated = [0, 0, 0, 0];
-          console.log(retrievedData.totalEntries);
-          calculated[0] = ((retrievedData.totalEntries -latest[0]) / retrievedData.totalEntries) * 100;
-          calculated[1] = ((retrievedData.totalUniqueUsers -latest[1]) / retrievedData.totalUniqueUsers) * 100;
-          calculated[2] = ((retrievedData.averageCallsInLast30Days -latest[2]) / retrievedData.averageCallsInLast30Days) * 100;
-          calculated[3] = ((retrievedData.averageMetricsLatency -latest[3]) / retrievedData.averageMetricsLatency) * 100;
-          setPercentages(calculated);
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -85,26 +73,26 @@ const dashboard = () => {
 
         <section className="widget-container">
           <WidgetItem
-            percent={percentages[0]}
+            percent={parseFloat(((retrievedData?.totalEntries - 98) / 98).toFixed(2))*100 ??0}
             amount={true}
             value={retrievedData?.totalEntries ?? 0}
             heading="Total Revenue"
             color="rgb(0,115,255)"
           />
           <WidgetItem
-            percent={-percentages[1]}
+            percent={parseFloat(((retrievedData?.totalUniqueUsers - 4) / 4).toFixed(2))*100 ?? 0}
             value={retrievedData?.totalUniqueUsers ?? 0}
             heading="Users"
             color="rgb(0 198 202)"
           />
           <WidgetItem
-            percent={percentages[2]}
+            percent={parseFloat(((retrievedData?.averageCallsInLast30Days - 2) / 2).toFixed(2))*100??0}
             value={retrievedData?.averageCallsInLast30Days ?? 0}
             heading="Calls(30d)"
             color="rgb(255 196 0)"
           />
           <WidgetItem
-            percent={percentages[3]}
+            percent={parseFloat(((retrievedData?.averageMetricsLatency - 2000) / 2000).toFixed(2))*100??0}
             value={(retrievedData?.averageMetricsLatency) ?? 0}
             heading="Avg Latency (msec)"
             color="rgb(76 0 255)"
@@ -112,18 +100,6 @@ const dashboard = () => {
         </section>
 
         <section className="graph-container">
-          {/* <div className="revenue-chart">
-            <h2>Monthly API Calls</h2>
-            <BarChart
-              data_1={[200, 444, 343, 556, 778, 455, 990]}
-              data_2={[300, 144, 433, 655, 237, 755, 190]}
-              title_1="Revenue"
-              title_2="Transaction"
-              bgColor_1="rgb(0,115,255)"
-              bgColor_2="rgba(53,162,235,0.8)"
-            />
-          </div> */}
-
         {
           <section>
             <BarChart
